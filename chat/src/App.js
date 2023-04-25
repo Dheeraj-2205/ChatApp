@@ -10,7 +10,7 @@ const loginHandler = () =>{
 }
 
 const logoutHandler = () =>{
-  
+  signOut(auth)
 }
 function App() {
   const  [user,setUser] = useState(false);
@@ -26,7 +26,7 @@ function App() {
         user ? (
           <Container h ={"100vh"} bg = {"white"}>
             <VStack h= {"full"} bg = {"telegram.100"} overflowX={"auto"}>
-              <Button w = {"full"} colorScheme = {"blue"}>
+              <Button w = {"full"} colorScheme = {"blue"} onClick={logoutHandler}>
                 Logout
               </Button>
               <VStack h= "full" w = "full" bg = "purple.100" padding={"4"}>
