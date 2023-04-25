@@ -3,12 +3,29 @@ import Message from "./Components/Message";
 import {onAuthStateChanged, GoogleAuthProvider,getAuth,signInWithPopup,signOut} from "firebase/auth"
 import {app} from "./firebase"
 import { useEffect, useState } from "react";
+import {getFirestore,addDoc, collection} from "firebase/firestore"
+
+
+
+
 const auth = getAuth(app);
 const loginHandler = () =>{
   const provider = new GoogleAuthProvider();
   signInWithPopup(auth,provider)
 }
 
+const submitHandler = async(e) =>{
+  e.preventDefaut();
+  try {
+    await addDoc(collection(db,"Message"),{
+      text : "fkldla",
+      uid : user.uid,
+
+    });
+  } catch (error) {
+    alert(error)
+  }
+}
 const logoutHandler = () =>{
   signOut(auth)
 }
@@ -16,9 +33,12 @@ function App() {
   const  [user,setUser] = useState(false);
 
   useEffect(()=>{
-    onAuthStateChanged(auth,(data)=>{
+    const unsubscribe =  onAuthStateChanged(auth,(data)=>{
       setUser(data);
-    },[]);
+    });
+    return () =>{
+      unsubscribe();
+    }
   })
   return (
     <Box bg ={"red.50"}>
@@ -33,7 +53,7 @@ function App() {
                 <Message text = {"sample message"} uri = {"dfkl"}/>
               </VStack>
 
-              <form style={{width:"100%"}}>
+              <form onSubmit = {submitHandler} style={{width:"100%"}}>
                 <HStack>
                   <Input placeholder="Enter a message"/>
                   <Button colorScheme = {"purple"} type = "submit">
