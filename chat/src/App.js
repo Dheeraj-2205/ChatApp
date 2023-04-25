@@ -3,34 +3,38 @@ import Message from "./Components/Message";
 import {onAuthStateChanged, GoogleAuthProvider,getAuth,signInWithPopup,signOut} from "firebase/auth"
 import {app} from "./firebase"
 import { useEffect, useState } from "react";
-import {getFirestore,addDoc, collection} from "firebase/firestore"
+import {getFirestore,addDoc, collection, serverTimestamp} from "firebase/firestore"
 
 
 
 
 const auth = getAuth(app);
+const db = getFirestore(app);
 const loginHandler = () =>{
   const provider = new GoogleAuthProvider();
   signInWithPopup(auth,provider)
 }
 
-const submitHandler = async(e) =>{
-  e.preventDefaut();
-  try {
-    await addDoc(collection(db,"Message"),{
-      text : "fkldla",
-      uid : user.uid,
 
-    });
-  } catch (error) {
-    alert(error)
-  }
-}
 const logoutHandler = () =>{
   signOut(auth)
 }
 function App() {
   const  [user,setUser] = useState(false);
+  const submitHandler = async(e) =>{
+    e.preventDefaut();
+    try {
+      await addDoc(collection(db,"Message"),{
+        text : "fkldla",
+        uid : user.uid,
+        url : user.photoUrl,
+        createdAt : serverTimestamp()
+      });
+    } catch (error) {
+      alert(error)
+    }
+  }
+
 
   useEffect(()=>{
     const unsubscribe =  onAuthStateChanged(auth,(data)=>{
