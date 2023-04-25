@@ -1,4 +1,4 @@
-import {Box,ButtonGroup,Container,VStack,Button, Input} from "@chakra-ui/react"
+import {Box,Container,VStack,Button, Input,HStack} from "@chakra-ui/react"
 
 
 function App() {
@@ -10,15 +10,17 @@ function App() {
             <Button w = {"full"} colorScheme = {"blue"}>
               Logout
             </Button>
-            <VStack h= "full" w = "full" bg = "purple.100">
+            <VStack h= "full" w = "full" bg = "purple.100" padding={"4"}>
 
             </VStack>
 
-            <form>
-              <Input/>
-              <Button colorScheme = {"purple.100"} type = "submit">
-
-              </Button>
+            <form style={{width:"100%"}}>
+              <HStack>
+                <Input placeholder="Enter a message"/>
+                <Button colorScheme = {"purple"} type = "submit">
+                    send
+                </Button>
+              </HStack>
             </form>
           </VStack>
       </Container>
