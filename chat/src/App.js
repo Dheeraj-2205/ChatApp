@@ -1,9 +1,14 @@
 import {Box,Container,VStack,Button, Input,HStack} from "@chakra-ui/react"
 import Message from "./Components/Message";
+import {GoogleAuthProvider,getAuth,signInWithPopup} from "firebase/auth"
+import {app} from "./firebase"
 
-
+const auth = getAuth(app);
+const loginHandler = () =>{
+  const provider = new GoogleAuthProvider();
+  signInWithPopup(auth,provider)
+}
 function App() {
-  console.log("object");
   return (
     <Box bg ={"red.50"}>
       <Container h ={"100vh"} bg = {"white"}>
