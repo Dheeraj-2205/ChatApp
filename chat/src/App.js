@@ -1,4 +1,5 @@
 import {Box,Container,VStack,Button, Input,HStack} from "@chakra-ui/react"
+import Message from "./Components/Message";
 
 
 function App() {
@@ -11,7 +12,7 @@ function App() {
               Logout
             </Button>
             <VStack h= "full" w = "full" bg = "purple.100" padding={"4"}>
-
+              <Message text = {"sample message"}/>
             </VStack>
 
             <form style={{width:"100%"}}>
