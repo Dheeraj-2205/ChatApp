@@ -12,7 +12,7 @@ function App() {
               Logout
             </Button>
             <VStack h= "full" w = "full" bg = "purple.100" padding={"4"}>
-              <Message text = {"sample message"}/>
+              <Message text = {"sample message"} uri = {"dfkl"}/>
             </VStack>
 
             <form style={{width:"100%"}}>
