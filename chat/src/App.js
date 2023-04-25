@@ -7,7 +7,7 @@ function App() {
   return (
     <Box bg ={"red.50"}>
       <Container h ={"100vh"} bg = {"white"}>
-          <VStack h= {"full"} bg = {"telegram.100"}>
+          <VStack h= {"full"} bg = {"telegram.100"} overflowX={"auto"}>
             <Button w = {"full"} colorScheme = {"blue"}>
               Logout
             </Button>
