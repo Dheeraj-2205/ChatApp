@@ -21,15 +21,17 @@ const logoutHandler = () =>{
 }
 function App() {
   const  [user,setUser] = useState(false);
+  const [message,setMessage] = useState("")
   const submitHandler = async(e) =>{
     e.preventDefaut();
     try {
       await addDoc(collection(db,"Message"),{
-        text : "fkldla",
+        text : message,
         uid : user.uid,
         url : user.photoUrl,
         createdAt : serverTimestamp()
       });
+      setMessage("")
     } catch (error) {
       alert(error)
     }
@@ -59,7 +61,7 @@ function App() {
 
               <form onSubmit = {submitHandler} style={{width:"100%"}}>
                 <HStack>
-                  <Input placeholder="Enter a message"/>
+                  <Input placeholder="Enter a message" value={message} onChange={(e) => setMessage(e.target.value)}/>
                   <Button colorScheme = {"purple"} type = "submit">
                       send
                   </Button>
