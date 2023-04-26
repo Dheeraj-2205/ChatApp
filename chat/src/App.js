@@ -3,7 +3,7 @@ import Message from "./Components/Message";
 import {onAuthStateChanged, GoogleAuthProvider,getAuth,signInWithPopup,signOut} from "firebase/auth"
 import {app} from "./firebase"
 import { useEffect, useState } from "react";
-import {getFirestore,addDoc, collection, serverTimestamp} from "firebase/firestore"
+import {getFirestore,addDoc, collection, serverTimestamp, onSnapshot} from "firebase/firestore"
 
 
 
@@ -44,6 +44,9 @@ function App() {
     const unsubscribe =  onAuthStateChanged(auth,(data)=>{
       setUser(data);
     });
+    onSnapshot(collection(db,"Message"),(snap)=>{
+      console.log(snap);
+    })
     return () =>{
       unsubscribe();
     }
