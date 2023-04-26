@@ -22,13 +22,14 @@ const logoutHandler = () =>{
 function App() {
   const  [user,setUser] = useState(false);
   const [message,setMessage] = useState("")
+
   const submitHandler = async(e) =>{
     e.preventDefaut();
     try {
       await addDoc(collection(db,"Message"),{
         text : message,
         uid : user.uid,
-        url : user.photoUrl,
+        url : user.photoURL,
         createdAt : serverTimestamp()
       });
       setMessage("")
