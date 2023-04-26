@@ -21,7 +21,8 @@ const logoutHandler = () =>{
 }
 function App() {
   const  [user,setUser] = useState(false);
-  const [message,setMessage] = useState("")
+  const [message,setMessage] = useState("");
+  const [messages , setMessages]  = useState([]);
 
   const submitHandler = async(e) =>{
     e.preventDefault();
@@ -57,7 +58,13 @@ function App() {
                 Logout
               </Button>
               <VStack h= "full" w = "full" bg = "purple.100" padding={"4"}>
-                <Message text = {"sample message"} uri = {"dfkl"}/>
+                {
+                  messages.map((item)=>{
+                    return (
+                      <Message key = {item.id} user = {item.uri === user.uid ? "me": "other"}  text = {item.text} uri ={item.uri}/>
+                    )
+                  })
+                }
               </VStack>
 
               <form onSubmit ={submitHandler} style={{width:"100%"}}>
