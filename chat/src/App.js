@@ -24,7 +24,7 @@ function App() {
   const [message,setMessage] = useState("")
 
   const submitHandler = async(e) =>{
-    e.preventDefaut();
+    e.preventDefault();
     try {
       await addDoc(collection(db,"Message"),{
         text : message,
@@ -60,7 +60,7 @@ function App() {
                 <Message text = {"sample message"} uri = {"dfkl"}/>
               </VStack>
 
-              <form onSubmit = {submitHandler} style={{width:"100%"}}>
+              <form onSubmit ={submitHandler} style={{width:"100%"}}>
                 <HStack>
                   <Input placeholder="Enter a message" value={message} onChange={(e) => setMessage(e.target.value)}/>
                   <Button colorScheme = {"purple"} type = "submit">
@@ -72,9 +72,9 @@ function App() {
          </Container>
         ) :
         <VStack h = "100vh" justifyContent={"center"} bg={"white"}>
-          <button colorScheme={"purple"} onClick={loginHandler}>
+          <Button colorScheme={"purple"} onClick={loginHandler}>
             Sign In With Google
-          </button>
+          </Button>
         </VStack>
       }
       
