@@ -2,8 +2,8 @@ import {Box,Container,VStack,Button, Input,HStack} from "@chakra-ui/react"
 import Message from "./Components/Message";
 import {onAuthStateChanged, GoogleAuthProvider,getAuth,signInWithPopup,signOut} from "firebase/auth"
 import {app} from "./firebase"
-import { useEffect, useState } from "react";
-import {getFirestore,addDoc, collection, serverTimestamp, onSnapshot} from "firebase/firestore"
+import { useEffect, useRef, useState } from "react";
+import {getFirestore,addDoc, collection, serverTimestamp, onSnapshot,query,orderBy} from "firebase/firestore"
 
 
 
@@ -20,13 +20,17 @@ const logoutHandler = () =>{
   signOut(auth)
 }
 function App() {
+  const q = query(collection(db,"Message"),orderBy("createdAt","asc"))
   const  [user,setUser] = useState(false);
   const [message,setMessage] = useState("");
   const [messages , setMessages]  = useState([]);
 
+  const divForScroll = useRef(null);
+
   const submitHandler = async(e) =>{
     e.preventDefault();
     try {
+      setMessage("")
       await addDoc(collection(db,"Message"),{
         text : message,
         uid : user.uid,
@@ -34,6 +38,7 @@ function App() {
         createdAt : serverTimestamp()
       });
       setMessage("")
+      divForScroll.current.scrollIntoView({behaviour :"smooth"})
     } catch (error) {
       alert(error)
     }
@@ -44,30 +49,37 @@ function App() {
     const unsubscribe =  onAuthStateChanged(auth,(data)=>{
       setUser(data);
     });
-    onSnapshot(collection(db,"Message"),(snap)=>{
-      console.log(snap);
+    const unsubscribeForMessage = onSnapshot(q,(snap)=>{
+      setMessages(
+        snap.docs.map((item)=> {
+          const id = item.id;
+          return { id, ...item.data()};
+        })
+      );
     })
     return () =>{
       unsubscribe();
+      unsubscribeForMessage();
     }
-  })
+  },[])
   return (
     <Box bg ={"red.50"}>
       {
         user ? (
           <Container h ={"100vh"} bg = {"white"}>
-            <VStack h= {"full"} bg = {"telegram.100"} overflowX={"auto"}>
+            <VStack h= {"full"} w ={"full"} bg = {"telegram.100"} >
               <Button w = {"full"} colorScheme = {"blue"} onClick={logoutHandler}>
                 Logout
               </Button>
-              <VStack h= "full" w = "full" bg = "purple.100" padding={"4"}>
+              <VStack h= {"full"} w = {"full"} bg = "purple.200" padding={"4"} overflowY={"auto"}>
                 {
                   messages.map((item)=>{
                     return (
-                      <Message key = {item.id} user = {item.uri === user.uid ? "me": "other"}  text = {item.text} uri ={item.uri}/>
+                      <Message key = {item.id} user = {item.uid === user.uid ? "me": "other"}  text = {item.text} uri ={item.url}/>
                     )
                   })
                 }
+                <div ref={divForScroll}></div>
               </VStack>
 
               <form onSubmit ={submitHandler} style={{width:"100%"}}>
