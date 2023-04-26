@@ -20,7 +20,7 @@ const logoutHandler = () =>{
   signOut(auth)
 }
 function App() {
-  const q = query(collection(db,"Message"),orderBy("createdAt","asc"))
+  
   const  [user,setUser] = useState(false);
   const [message,setMessage] = useState("");
   const [messages , setMessages]  = useState([]);
@@ -46,6 +46,7 @@ function App() {
 
 
   useEffect(()=>{
+    const q = query(collection(db,"Message"),orderBy("createdAt","asc"))
     const unsubscribe =  onAuthStateChanged(auth,(data)=>{
       setUser(data);
     });
@@ -71,7 +72,9 @@ function App() {
               <Button w = {"full"} colorScheme = {"blue"} onClick={logoutHandler}>
                 Logout
               </Button>
-              <VStack h= {"full"} w = {"full"} bg = "purple.200" padding={"4"} overflowY={"auto"}>
+              <VStack h= {"full"} w = {"full"} bg = "purple.200" padding={"4"} overflowY={"auto"} css = {{"&::-webkit-scrollbar" :{
+                display :"none"
+              }}}>
                 {
                   messages.map((item)=>{
                     return (
